@@ -1,0 +1,59 @@
+/*  新的《复仇者联盟》电影刚刚上映！电影院的售票处有很多人排着长队。每个人都有一张100、50或25美元的钞票。一张“复仇者”的票要25美元。
+     瓦莎目前是一名职员。他想把票卖给这一行里的每一个人。
+     如果瓦夏一开始没钱，他可以把票卖给每一个人，并给零钱吗？他严格按照人们排队的顺序来卖票。
+     返回是的，如果瓦夏可以卖一张车票给每个人，然后用他当时手头上的钞票来找零钱。否则返回否。
+ 
+     例子：
+     门票（【25,25，50】）//=》是
+     票([25,100])//=>不，瓦夏不会有足够的钱把零钱换成100美元
+     门票（【25,25,50,50,100】）//=没有。瓦夏不会有正确的钞票给75美元的零钱（你不能从50美元中拿出25美元的钞票）。 */
+    /* 前两个元素最好都是25 */
+    let tickets = (list) => {
+
+        /* 初始化钱包 */
+        let wallet = [];
+        wallet[25] = 0;
+        wallet[50] = 0;
+        wallet[100] = 0;
+
+        /* 初始化计算过程 */
+        let historyCalc = {};
+
+        for (let i = 0; i < list.length; i++) {
+            let current = list[i];
+
+            switch (current) {
+
+                case 25:
+                    wallet[25]++;
+                    break;
+
+                case 50:
+                    wallet[25]--;
+                    wallet[50]++;
+                    break;
+
+                case 100:
+                    wallet[25]--;
+                    wallet[50]--;
+                    wallet[100]++;
+                    break;
+            }
+
+            historyCalc[i] = {
+                ...wallet,
+                total: list.length,
+                current
+            }
+
+            if (wallet[25] < 0 || wallet[50] < 0) {
+                break;
+            }
+        }
+        console.log(historyCalc);
+        return historyCalc
+    }
+
+    let list = [25, 25, 25, 50, 50, 50, 100];
+
+    tickets(list);
