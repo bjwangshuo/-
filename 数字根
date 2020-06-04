@@ -1,0 +1,68 @@
+/* 数字根是一个数字中所有数字的递归和。给定n，取n的位数之和。如果该值有多个数字，则继续以这种方式减少，直到产生一个位数。这只适用于自然数。
+    下面是它的工作原理：
+    数字根（16）
+    => 1 + 6
+    => 7
+
+    数字根（942）
+    => 9 + 4 + 2
+    => 15 ...
+    => 1 + 5
+    => 6
+
+    数字根（132189）
+    => 1 + 3 + 2 + 1 + 8 + 9
+    => 24 ...
+    => 2 + 4
+    => 6
+
+    数字根（493193）
+    => 4 + 9 + 3 + 1 + 9 + 3
+    => 29 ...
+    => 2 + 9
+    => 11 ...
+    => 1 + 1
+    => 2 */
+    
+    /* 数字格式化 */
+    let formatNum = (str) => {
+        str = String(str);
+        if (/\./.test(str)) {
+            return str.replace(/\d(?=(\d{1})+\.)/g, "$&,").split("").reverse().join("").replace(/\d(?=(\d{1})+\.)/g, "$&,").split("").reverse().join("");
+        } else {
+            return str.replace(/\d(?=(\d{1})+$)/g, "$&,");
+        }
+    }
+    let digitalRoot = (num) => {
+        let str = formatNum(num);
+        let queue = str.split(',');
+        /* 最终结果 */
+        let maxNum = 0;
+        /* 初始化计算过程 */
+        let historyCalc = {
+            "0": {
+                maxNum,
+                queue,
+            }
+        };
+        /* 计算次数 */
+        let calcIndex = 1;
+        // for(let calcIndex = 1;queue.length > 1,calcIndex++){}
+        while (queue.length > 1) {
+
+            maxNum = 0;
+            maxNum = queue.reduce((total, currentNum) => { return Number(total) + Number(currentNum) });
+            queue = formatNum(maxNum).split(',');
+
+            /* 记录计算过程 */
+            historyCalc[calcIndex] = {
+                queue,
+                maxNum
+            }
+            calcIndex++;
+        };
+        console.log('数字根',historyCalc);
+        return historyCalc
+    };
+
+    digitalRoot(12345);
